@@ -8,10 +8,35 @@ on:
       - main
 
 jobs:
+
+  
+
   development-build-and-deploy:
     if: github.ref == 'refs/heads/development'
     runs-on: ubuntu-latest
     environment: development
+    steps:
+      - name: checkout to code root folder
+        uses: actions/checkout@v3
+      # - name: Cache build dependencies
+      #   uses: actions/cache@v2
+      #   id: cache-node
+      - name: Install dependencies
+        run: npm i
+      - name: Generate Artifacts
+        uses: actions/setup-node@v3
+        # with:
+        #   node-version: "16.x"
+      - name: Build Project
+        run: npm run build
+        env:
+          STRIPE_SK: ${{ secrets.STRIPE_SK }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+
+  main-build-and-deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: main
     steps:
       - name: checkout to code root folder
         uses: actions/checkout@v3
