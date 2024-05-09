@@ -15,9 +15,9 @@ jobs:
     steps:
       - name: checkout to code root folder
         uses: actions/checkout@v3
-      - name: Cache build dependencies
-        uses: actions/cache@v2
-        id: cache-node
+      # - name: Cache build dependencies
+      #   uses: actions/cache@v2
+      #   id: cache-node
       - name: Install dependencies
         run: npm i
       - name: Generate Artifacts
