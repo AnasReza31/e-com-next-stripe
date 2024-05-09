@@ -8,10 +8,10 @@ on:
       - main
 
 jobs:
-  main-build-and-deploy:
-    if: github.ref == 'ref/heads/main'
+  development-build-and-deploy:
+    if: github.ref == 'ref/heads/development'
     runs-on: ubuntu-latest
-    environment: main
+    environment: development
     steps:
       - name: checkout to code root folder
         uses: actions/checkout@v3
