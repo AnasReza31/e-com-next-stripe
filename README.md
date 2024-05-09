@@ -1,9 +1,9 @@
-# Mondelez Cadbury codebase
+# Ecommerce netx js with stripe
 
 **Stack**
 
 - Javascript
-- Gatsby
+- NextJs
 - Tailwind Components
 
 ---
