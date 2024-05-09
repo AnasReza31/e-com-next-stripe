@@ -26,3 +26,6 @@ jobs:
           node-versions: "16.x"
       - name: Build Project
         run: npm run build
+        env:
+          STRIPE_SK: ${{ secrets.STRIPE_SK }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
