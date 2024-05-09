@@ -1,4 +1,4 @@
-# Ecommerce netx js with stripe
+# Ecommerce Next js with Stripe
 
 **Stack**
 
