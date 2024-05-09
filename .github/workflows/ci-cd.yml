@@ -9,19 +9,31 @@ on:
 
 jobs:
 
-  
-
   development-build-and-deploy:
     if: github.ref == 'refs/heads/development'
     runs-on: ubuntu-latest
-    environment: development
+    environment: 
+      name: development
+    # steps for development-build-and-deploy
     steps:
       - name: checkout to code root folder
         uses: actions/checkout@v3
-      # - name: Cache build dependencies
-      #   uses: actions/cache@v2
-      #   id: cache-node
+      - name: Cache build dependencies
+        uses: actions/cache@v2
+        id: cache-node
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            **/node_modules
+            **/public
+            **/.cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
       - name: Install dependencies
+        if: steps.cache-node.outputs.cache.hit != 'true'
         run: npm i
       - name: Generate Artifacts
         uses: actions/setup-node@v3
