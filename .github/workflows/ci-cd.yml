@@ -11,7 +11,7 @@ jobs:
   development-build-and-deploy:
     if: github.ref == 'ref/heads/development'
     runs-on: ubuntu-latest
-    environment: development
+    ## environment: development
     steps:
       - name: checkout to code root folder
         uses: actions/checkout@v3
