@@ -23,7 +23,7 @@ jobs:
       - name: Generate Artifacts
         uses: actions/setup-node@v3
         with:
-          node-versions: "16.x"
+          node-version: "16.x"
       - name: Build Project
         run: npm run build
         env:
