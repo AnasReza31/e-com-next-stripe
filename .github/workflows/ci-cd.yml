@@ -29,6 +29,7 @@ jobs:
             **/public
             **/.cache
           ## key is an identifier to cache, so if run next time it will verify if key exist
+          ## it will re update the last cache if there's any change in package-lock.json
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-

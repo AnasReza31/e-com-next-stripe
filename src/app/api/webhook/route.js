@@ -1,7 +1,3 @@
-// export async function GET(req, res) {
-//     return Response.json({message: "success"})
-// }
-
 import { revalidatePath } from "next/cache";
 import { stripe } from "../../../utils/stripe";
 
