@@ -37,8 +37,8 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node.outputs.cache.hit != 'true'
         run: npm i
-      - name: Generate Artifacts
-        uses: actions/setup-node@v3
+      # - name: Generate Artifacts
+      #   uses: actions/setup-node@v3
         # with:
         #   node-version: "16.x"
       - name: Build Project
