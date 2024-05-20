@@ -9,6 +9,27 @@ on:
 
 jobs:
 
+  sonarQube:
+    if: github.ref == 'refs/heads/development'
+    name: SonarQubeScan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Test and coverage
+        run: |
+          npm run test: coverage
+      - uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{secrets.SONARQUBE_TOKEN}}
+          SONAR_HOST_URL: ${{secrets.SONAR_HOST_URL}}
+      ## below step is to fail job deployment when quality gate is failed
+      - uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{secrets.SONARQUBE_TOKEN}}
+
   development-build-and-deploy:
     if: github.ref == 'refs/heads/development'
     runs-on: ubuntu-latest
@@ -37,15 +58,25 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: npm i
-      # - name: Generate Artifacts
-      #   uses: actions/setup-node@v3
-        # with:
-        #   node-version: "16.x"
+      - name: Generate Artifacts
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
       - name: Build Project
         run: npm run build
         env:
           STRIPE_SK: ${{ secrets.STRIPE_SK }}
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          ## now connect to github bucket using auth key, init github sdk and then sync build into bucket
+          ## all steps will repeat as post steps for cleanup 
+      # - name: Deploy website into bucket
+      #   uses: google-github-actions/auth@v1
+      #   with:
+      #     credentials_json: ${{ secrets.GCP_CREDENTIALS}}
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v1
+      # - name: Syncing GCS bucket with current build
+      #   run: gsutil -m rsync -d -r public/ gs://${{ vars.CD_BUCKET_STATIC_SITE }}/
 
   main-build-and-deploy:
     if: github.ref == 'refs/heads/main'
